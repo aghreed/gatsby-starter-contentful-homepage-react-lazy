@@ -5,6 +5,12 @@ import { Container, Section, Text, SuperHeading } from "./ui"
 import * as styles from "./about-hero.css"
 
 export default function AboutHero(props) {
+  const [fakeValue, setFakeValue] = React.useState(false)
+  React.useEffect(() => {
+    console.log("about hero has mounted! ", fakeValue)
+    setFakeValue(true)
+  }, [])
+
   return (
     <Section>
       <Container>
