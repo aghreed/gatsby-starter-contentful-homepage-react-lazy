@@ -5,7 +5,18 @@ import * as sections from "../components/sections"
 import Fallback from "../components/fallback"
 import SEOHead from "../components/head"
 
+const SUSPENSE_CONFIG = {
+  timeoutMs: 4000,
+}
+
 export default function Homepage(props) {
+  const [fakeValue, setFakeValue] = React.useState(false)
+  const [isPending, startTransition] = React.useTransition(SUSPENSE_CONFIG)
+
+  React.useEffect(() => {
+    console.log("hey, there ", fakeValue)
+    startTransition(() => setFakeValue(true))
+  }, [])
   const { homepage } = props.data
 
   return (
@@ -13,7 +24,11 @@ export default function Homepage(props) {
       {homepage.blocks.map((block) => {
         const { id, blocktype, ...componentProps } = block
         const Component = sections[blocktype] || Fallback
-        return <Component key={id} {...componentProps} />
+        return (
+          <React.Suspense fallback={null}>
+            <Component key={id} {...componentProps} />
+          </React.Suspense>
+        )
       })}
     </Layout>
   )
