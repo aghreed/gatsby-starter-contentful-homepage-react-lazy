@@ -13,9 +13,9 @@ export default function Homepage(props) {
   }, [])
   const { homepage } = props.data
 
-  return (
-    <Layout>
-      {homepage.blocks.map((block) => {
+  const children = React.useMemo(() => {
+    {
+      homepage.blocks.map((block) => {
         const { id, blocktype, ...componentProps } = block
         const Component = sections[blocktype] || Fallback
         return (
@@ -23,9 +23,11 @@ export default function Homepage(props) {
             <Component key={id} {...componentProps} />
           </React.Suspense>
         )
-      })}
-    </Layout>
-  )
+      })
+    }
+  }, [homepage])
+
+  return <Layout>{children}</Layout>
 }
 export const Head = (props) => {
   const { homepage } = props.data
