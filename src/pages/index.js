@@ -5,11 +5,17 @@ import * as sections from "../components/sections"
 import Fallback from "../components/fallback"
 import SEOHead from "../components/head"
 
+const SUSPENSE_CONFIG = {
+  timeoutMs: 4000,
+}
+
 export default function Homepage(props) {
   const [fakeValue, setFakeValue] = React.useState(false)
+  const [isPending, startTransition] = React.useTransition(SUSPENSE_CONFIG)
+
   React.useEffect(() => {
     console.log("hey, there ", fakeValue)
-    setFakeValue(true)
+    startTransition(() => setFakeValue(true))
   }, [])
   const { homepage } = props.data
 
